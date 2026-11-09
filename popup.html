@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Saver</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="header">
+      <div class="brand">
+        <span class="logo">💬</span>
+        <div>
+          <h1 class="title">Chat Saver</h1>
+          <span id="platformTag" class="platform-tag">Detecting...</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="chat-info-card">
+      <div class="info-group">
+        <label for="chatTitleInput">Export File Title</label>
+        <input type="text" id="chatTitleInput" placeholder="Conversation Title">
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-pill">
+          <span class="metric-val" id="countMessages">0</span>
+          <span class="metric-lbl">Messages</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-val" id="countCodeBlocks">0</span>
+          <span class="metric-lbl">Code Blocks</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-val" id="countTables">0</span>
+          <span class="metric-lbl">Tables</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Scope Selector -->
+    <div class="scope-section">
+      <div class="scope-toggle">
+        <label class="radio-label">
+          <input type="radio" name="exportScope" value="all" checked id="scopeAll">
+          <span>All Messages</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="exportScope" value="selective" id="scopeSelective">
+          <span>Selective</span>
+        </label>
+      </div>
+
+      <div id="selectionDrawer" class="selection-drawer hidden">
+        <div class="drawer-header">
+          <span>Select messages to export:</span>
+          <button id="btnSelectAll" class="text-btn">Select All</button>
+        </div>
+        <div id="messagesListContainer" class="messages-list"></div>
+      </div>
+    </div>
+
+    <!-- Export Actions -->
+    <div class="actions-group">
+      <button id="btnExportMD" class="btn btn-markdown">
+        <span>📝 Save as Markdown (.md)</span>
+      </button>
+
+      <button id="btnExportPDF" class="btn btn-pdf">
+        <span>📄 Save as PDF</span>
+      </button>
+    </div>
+
+    <div id="statusToast" class="toast hidden">Export complete!</div>
+
+    <footer class="footer">
+      <span>100% Offline & Private · Zero Server Uploads</span>
+    </footer>
+  </div>
+
+  <script src="js/popup.js"></script>
+</body>
+</html>

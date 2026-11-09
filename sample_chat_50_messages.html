@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deep Dive into Distributed Systems and RAG Architecture</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #212121; color: #ececec; margin: 0; padding: 20px; }
+    .chat-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .chat-header { border-bottom: 1px solid #424242; padding-bottom: 16px; }
+    .chat-title { font-size: 24px; font-weight: 700; color: #fff; }
+    .chat-turn { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 8px; }
+    .chat-turn.user { background: #2f2f2f; }
+    .chat-turn.assistant { background: #1a1a1a; }
+    .user-label, .assistant-label { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .user-label { color: #60a5fa; }
+    .assistant-label { color: #34d399; }
+    pre { background: #000; padding: 12px; border-radius: 6px; overflow-x: auto; color: #f8fafc; font-family: "Courier New", monospace; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border: 1px solid #4a5568; padding: 8px 12px; text-align: left; }
+    th { background: #2d3748; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h1 class="chat-title">Distributed Systems & RAG Architecture Masterclass</h1>
+      <p style="color: #9ca3af; font-size: 14px;">52 messages offline verification session</p>
+    </div>
+
+    <!-- Messages will be rendered here by script -->
+    <div id="messagesList"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('messagesList');
+    
+    // Generate 52 distinct messages
+    const topics = [
+      { q: "Can you explain the CAP theorem simply?", a: "The CAP theorem states that in a distributed data store, you can only guarantee two out of the following three: Consistency, Availability, and Partition Tolerance." },
+      { q: "Give me a Python implementation of a consistent hashing ring.", a: "Here is a complete, runnable Python implementation:\n\n<pre><code class=\"language-python\">import hashlib\n\nclass HashRing:\n    def __init__(self, nodes=None, replicas=3):\n        self.replicas = replicas\n        self.ring = dict()\n        self.sorted_keys = []\n        if nodes:\n            for node in nodes:\n                self.add_node(node)\n\n    def _hash(self, key):\n        return int(hashlib.md5(key.encode('utf-8')).hexdigest(), 16)\n\n    def add_node(self, node):\n        for i in range(self.replicas):\n            key = self._hash(f\"{node}:{i}\")\n            self.ring[key] = node\n            self.sorted_keys.append(key)\n        self.sorted_keys.sort()\n\n    def get_node(self, string_key):\n        if not self.ring:\n            return None\n        h = self._hash(string_key)\n        for key in self.sorted_keys:\n            if h <= key:\n                return self.ring[key]\n        return self.ring[self.sorted_keys[0]]\n\n# Test run\nring = HashRing(['NodeA', 'NodeB', 'NodeC'])\nprint('Key1 assigned to:', ring.get_node('user_12345'))\n</code></pre>" },
+      { q: "Show a comparison table between SQL and NoSQL engines.", a: "<table><tr><th>Feature</th><th>Relational (SQL)</th><th>NoSQL (Document/KV)</th></tr><tr><td>Schema</td><td>Strict, Pre-defined</td><td>Dynamic, Flexible</td></tr><tr><td>Scaling</td><td>Vertical (Scale-up)</td><td>Horizontal (Scale-out)</td></tr><tr><td>ACID</td><td>Full ACID guarantees</td><td>BASE / Eventual Consistency</td></tr><tr><td>Best for</td><td>Complex joins, transactions</td><td>High throughput, unstructured data</td></tr></table>" },
+      { q: "How does vector search indexing work in modern RAG systems?", a: "Vector indexing relies on Approximate Nearest Neighbor (ANN) algorithms such as HNSW (Hierarchical Navigable Small World) and IVF-PQ (Inverted File with Product Quantization)." }
+    ];
+
+    let count = 0;
+    for (let round = 1; round <= 13; round++) {
+      topics.forEach(t => {
+        count++;
+        // User turn
+        const userDiv = document.createElement('div');
+        userDiv.className = 'chat-turn user';
+        userDiv.innerHTML = `<span class="user-label">User (#${count})</span><div>${t.q} (Round ${round})</div>`;
+        container.appendChild(userDiv);
+
+        count++;
+        // Assistant turn
+        const asstDiv = document.createElement('div');
+        asstDiv.className = 'chat-turn assistant';
+        asstDiv.innerHTML = `<span class="assistant-label">Assistant (#${count})</span><div>${t.a}</div>`;
+        container.appendChild(asstDiv);
+      });
+    }
+  </script>
+</body>
+</html>
